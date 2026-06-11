@@ -26,8 +26,10 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Install older puppeteer-core that works well with system Chromium
 RUN npm install -g puppeteer-core@19.11.1
+
+# Create writable temp dir for crash dumps
+RUN mkdir -p /tmp/chrome-crashes && chmod 777 /tmp/chrome-crashes
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV CHROMIUM_PATH=/usr/bin/chromium
