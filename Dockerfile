@@ -26,10 +26,8 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Install puppeteer-core globally so it's available in /home/container
-RUN npm install -g puppeteer-core \
-    && mkdir -p /home/container/node_modules \
-    && ln -s /usr/local/lib/node_modules/puppeteer-core /home/container/node_modules/puppeteer-core
+# Install older puppeteer-core that works well with system Chromium
+RUN npm install -g puppeteer-core@19.11.1
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV CHROMIUM_PATH=/usr/bin/chromium
