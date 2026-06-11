@@ -1,6 +1,5 @@
 FROM node:20-bookworm-slim
 
-# Install Chromium and dependencies
 RUN apt-get update && apt-get install -y \
     chromium \
     fonts-liberation \
@@ -27,13 +26,13 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Install puppeteer-core globally
 RUN npm install -g puppeteer-core
 
-# Set environment variables
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV CHROMIUM_PATH=/usr/bin/chromium
 
 WORKDIR /home/container
 
-USER root
+# Override default node entrypoint
+ENTRYPOINT ["/bin/bash", "-c"]
+CMD ["node /home/container/runner.js"]
