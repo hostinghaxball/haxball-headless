@@ -26,13 +26,15 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g puppeteer-core
+# Install puppeteer-core globally so it's available in /home/container
+RUN npm install -g puppeteer-core \
+    && mkdir -p /home/container/node_modules \
+    && ln -s /usr/local/lib/node_modules/puppeteer-core /home/container/node_modules/puppeteer-core
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV CHROMIUM_PATH=/usr/bin/chromium
 
 WORKDIR /home/container
 
-# Override default node entrypoint
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["node /home/container/runner.js"]
